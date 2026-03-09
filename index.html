@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولد روابط PDF المشفرة | أدوات المطورين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #34a853;
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 95%;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .tool-section {
+            text-align: right;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .btn-generate {
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-generate:hover {
+            background: #1557b0;
+            transform: translateY(-2px);
+        }
+
+        #resultArea {
+            margin-top: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px dashed var(--primary-color);
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            resize: none;
+            margin-bottom: 15px;
+            font-family: monospace;
+            direction: ltr;
+        }
+
+        .btn-copy {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>💎 مولد الروابط الآمنة</h1>
+        <p>أداة احترافية لتشفير روابط Google Drive وتجهيزها لصفحة إعادة التوجيه بمدونتك، لزيادة الأمان وأرباح الإعلانات.</p>
+    </header>
+
+    <main class="tool-section">
+        <div class="input-group">
+            <label>رابط ملف Google Drive (PDF):</label>
+            <input type="text" id="driveUrl" placeholder="https://drive.google.com/file/d/..." />
+        </div>
+
+        <div class="input-group">
+            <label>رابط صفحة التحميل في مدونتك:</label>
+            <input type="text" id="blogPage" placeholder="https://www.yourblog.com/p/download.html" />
+        </div>
+
+        <button onclick="generateLink()" class="btn-generate">توليد الرابط المشفر ✨</button>
+
+        <div id="resultArea" style="display:none;">
+            <label style="color: var(--secondary-color);">الرابط جاهز للنشر:</label>
+            <textarea id="finalUrl" readonly></textarea>
+            <button onclick="copyToClipboard()" class="btn-copy">نسخ الرابط</button>
+        </div>
+    </main>
+
+    <footer>
+        جميع الحقوق محفوظة &copy; 2026 - مبرمج خصيصاً لمدونتك
+    </footer>
+</div>
+
+<script>
+function generateLink() {
+    const driveUrl = document.getElementById('driveUrl').value;
+    const blogPage = document.getElementById('blogPage').value;
+    const regex = /(?:\/d\/|id=)([\w-]+)/;
+    const match = driveUrl.match(regex);
+
+    if (match && match[1] && blogPage) {
+        const fileId = match[1];
+        const encodedId = btoa(fileId); // تشفير المعرف
+        const separator = blogPage.includes('?') ? '&' : '?';
+        const finalResult = `${blogPage}${separator}id=${encodedId}`;
+
+        document.getElementById('finalUrl').value = finalResult;
+        document.getElementById('resultArea').style.display = 'block';
+    } else {
+        alert('يرجى إدخال رابط درايف صحيح ورابط صفحة التحميل.');
+    }
+}
+
+function copyToClipboard() {
+    const copyText = document.getElementById("finalUrl");
+    copyText.select();
+    document.execCommand("copy");
+    alert("تم النسخ بنجاح! يمكنك الآن استخدامه في تدوينتك.");
+}
+</script>
+
+</body>
+</html>
