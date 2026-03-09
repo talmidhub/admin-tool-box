@@ -3,73 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحكم روابط Talmid Hub</title>
+    <title>لوحة تحكم Talmid Hub | مولد الأكواد</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #1a73e8; --success: #28a745; --bg: #f8f9fa; }
-        body { font-family: 'Tajawal', sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .main-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 90%; max-width: 600px; text-align: center; }
-        h1 { color: var(--primary); font-size: 24px; margin-bottom: 20px; }
-        .desc { color: #666; font-size: 14px; margin-bottom: 25px; }
-        .input-box { text-align: right; margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; }
-        input { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 15px; transition: 0.3s; }
-        input:focus { border-color: var(--primary); outline: none; }
-        .btn-gen { width: 100%; background: var(--primary); color: white; border: none; padding: 15px; border-radius: 8px; font-size: 17px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        :root { --primary: #1a73e8; --success: #28a745; --bg: #f1f3f4; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); width: 100%; max-width: 700px; }
+        h1 { color: var(--primary); text-align: center; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .input-group { margin-bottom: 15px; text-align: right; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        .btn-gen { background: var(--primary); color: white; margin-top: 10px; }
         .btn-gen:hover { background: #1557b0; }
-        #result-section { margin-top: 30px; display: none; background: #e8f0fe; padding: 20px; border-radius: 10px; border: 1px dashed var(--primary); }
-        textarea { width: 100%; height: 70px; margin-top: 10px; border-radius: 5px; border: 1px solid #ccc; padding: 10px; resize: none; direction: ltr; font-family: monospace; }
-        .btn-copy { background: var(--success); color: white; border: none; padding: 10px 20px; border-radius: 5px; margin-top: 10px; cursor: pointer; font-weight: bold; }
+        #output { display: none; margin-top: 25px; border-top: 2px solid #eee; padding-top: 20px; }
+        .code-box { background: #272c33; color: #adbac7; padding: 15px; border-radius: 8px; position: relative; margin-top: 10px; }
+        textarea { width: 100%; height: 180px; background: transparent; color: #9cdcfe; border: none; font-family: monospace; resize: none; direction: ltr; }
+        .copy-badge { background: var(--success); color: white; padding: 5px 15px; border-radius: 5px; cursor: pointer; float: left; font-size: 12px; }
     </style>
 </head>
 <body>
 
-<div class="main-card">
-    <h1>🚀 مولد روابط Talmid Hub</h1>
-    <p class="desc">ضع رابط Google Drive بالأسفل لتحويله إلى رابط مشفر يعمل مع صفحة التحميل بمدونتك تلقائياً.</p>
+<div class="container">
+    <h1>🛠️ مولد صناديق التحميل</h1>
     
-    <div class="input-box">
-        <label>رابط ملف الـ PDF من درايف:</label>
-        <input type="text" id="driveLink" placeholder="https://drive.google.com/file/d/..." />
+    <div class="input-group">
+        <label>1. اسم الملف (يظهر للزائر):</label>
+        <input type="text" id="fileName" placeholder="مثال: كتاب اللغة العربية PDF">
     </div>
 
-    <button onclick="makeLink()" class="btn-gen">توليد الرابط المشفر ✨</button>
+    <div class="input-group">
+        <label>2. رابط ملف Google Drive:</label>
+        <input type="text" id="driveLink" placeholder="https://drive.google.com/file/d/...">
+    </div>
 
-    <div id="result-section">
-        <label style="color: var(--primary);">انسخ الرابط وضعه في تدوينتك:</label>
-        <textarea id="finalUrl" readonly></textarea>
-        <button onclick="copyIt()" class="btn-copy">نسخ الرابط الجاهز</button>
+    <button class="btn-gen" onclick="generateFullCode()">توليد كود التدوينة ✨</button>
+
+    <div id="output">
+        <h3 style="text-align: right;">انسخ الكود وضعه في تدوينتك (وضع HTML):</h3>
+        <div class="code-box">
+            <span class="copy-badge" onclick="copyCode()">نسخ الكود</span>
+            <textarea id="finalHTML" readonly></textarea>
+        </div>
+        <p style="font-size: 13px; color: #666; text-align: right; margin-top: 10px;">
+            💡 هذا الكود يحتوي على الزر المشفر الذي سيوجه الزائر تلقائياً لصفحة التحميل بمدونتك.
+        </p>
     </div>
 </div>
 
 <script>
-function makeLink() {
+function generateFullCode() {
+    const name = document.getElementById('fileName').value || "تحميل الملف";
     const driveUrl = document.getElementById('driveLink').value;
-    // رابط صفحة التحميل الخاصة بك (تم تثبيتها هنا)
-    const blogBaseUrl = "https://www.talmidhub.net/p/download.html";
-    
+    const blogPage = "https://www.talmidhub.net/p/download.html";
+
     const regex = /(?:\/d\/|id=)([\w-]+)/;
     const match = driveUrl.match(regex);
 
     if (match && match[1]) {
         const fileId = match[1];
-        // تشفير الـ ID
         const encodedId = btoa(fileId);
-        // تكوين الرابط النهائي
-        const finalLink = `${blogBaseUrl}?id=${encodedId}`;
+        const finalRedirectUrl = `${blogPage}?id=${encodedId}`;
 
-        document.getElementById('finalUrl').value = finalLink;
-        document.getElementById('result-section').style.display = 'block';
+        // توليد كود HTML الذي سيوضع في بلوجر
+        const htmlTemplate = `<div class="th-download-box" style="border: 2px solid #1a73e8; border-radius: 12px; padding: 20px; text-align: center; background: #ffffff; margin: 20px 0; font-family: 'Tajawal', sans-serif; direction: rtl;">
+    <div style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 15px;">📥 ${name}</div>
+    <p style="font-size: 14px; color: #666; margin-bottom: 20px;">انقر على الزر أدناه للانتقال لصفحة التحميل المباشر الآمنة.</p>
+    <a href="${finalRedirectUrl}" target="_blank" style="background: #1a73e8; color: #ffffff !important; padding: 12px 35px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block; transition: 0.3s;">اضغط هنا للتحميل المباشر</a>
+    <div style="margin-top: 15px; font-size: 11px; color: #999;">رابط آمن ومفحص ضد الفيروسات</div>
+</div>`;
+
+        document.getElementById('finalHTML').value = htmlTemplate;
+        document.getElementById('output').style.display = 'block';
     } else {
-        alert('يرجى إدخال رابط Google Drive صحيح يحتوي على معرف الملف.');
+        alert('تأكد من رابط جوجل درايف!');
     }
 }
 
-function copyIt() {
-    const copyText = document.getElementById("finalUrl");
-    copyText.select();
+function copyCode() {
+    const text = document.getElementById("finalHTML");
+    text.select();
     document.execCommand("copy");
-    alert("تم النسخ! يمكنك الآن لصقه في موضوعك على بلوجر.");
+    alert("تم نسخ الكود! اذهب لمدونتك والصقه في وضع HTML.");
 }
 </script>
 
